@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Generated Exercises</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-5 mb-4">Generated Exercises</h1>
+
+        <div class="card mb-4">
+            <div class="card-body">
+                <h2 class="card-title">Exercise 1: Choose the Correct Sentence</h2>
+                <form method="post" action="{% url 'check_exercise_1' %}">
+                    {% csrf_token %}
+                    {% for option in exercise_1.options %}
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="answer" value="{{ option }}" id="{{ option }}">
+                        <label class="form-check-label" for="{{ option }}">{{ option }}</label>
+                    </div>
+                    {% endfor %}
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+        
+
+        <div class="card mb-4">
+            <div class="card-body">
+                <h2 class="card-title">Exercise 2: Choose the Correct Word</h2>
+                <p class="card-text">Find the correct verb:</p>
+                <p class="card-text">{{ exercise_2.sentence }}</p>
+                <form method="post" action="{% url 'check_exercise_2' %}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <select class="form-control" name="answer" id="answer">
+                            <option value="">Choose an option</option>
+                            {% for option in exercise_2.options %}
+                            <option value="{{ option }}">{{ option }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-body">
+                <h2 class="card-title">Exercise 3: Rearrange the Word</h2>
+                <p class="card-text">Reorder the letters of the word. The first letter is already provided.</p>
+                <p class="card-text">{{ exercise_3.sentence | safe}}</p>
+                <p class="card-text">Guess the word:</p>
+                <p class="card-text"><strong>{{ exercise_3.clue }}</strong></p>
+                <form method="post" action="{% url 'check_exercise_3' %}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="input_answer">Enter your answer:</label>
+                        <input type="text" class="form-control" name="answer" id="input_answer">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-body">
+                <h2 class="card-title">Exercise 4: Rearrange the Sentence</h2>
+                <p class="card-text">Reorder the words to form a sentence.</p>
+                <!-- <p class="card-text">Answer: {{ exercise_4.question }}</p> -->
+                <p class="card-text">Question: {{ exercise_4.sentence }}</p>
+                <form method="post" action="{% url 'check_exercise_4' %}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="input_sentence">Arrange the words:</label>
+                        <input type="text" class="form-control" name="sentence" id="input_sentence">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
