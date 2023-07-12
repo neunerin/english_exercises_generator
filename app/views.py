@@ -8,7 +8,10 @@ import string
 # from PyDictionary import PyDictionary
 import requests
 from django.http import HttpResponse
+import nltk
+from nltk.corpus import wordnet
 
+nltk.download('wordnet')
 nlp = en_core_web_sm.load()
 word2vec_model = api.load('glove-wiki-gigaword-100')
 
@@ -23,11 +26,11 @@ def generate_exercise_1(text):
 
 
 def generate_wrong_sentences(sentence):
-    translator = str.maketrans("", "", string.punctuation)
-    sentence_punct = sentence.translate(translator)
+    # translator = str.maketrans("", "", string.punctuation)
+    # sentence_punct = sentence.translate(translator)
     unique_sentences = set()
-    unique_sentences.add(sentence_punct)
-    words = sentence_punct.split()
+    unique_sentences.add(sentence)
+    words = sentence.split()
     first_word = words[0]
     remaining_words = words[1:]
     
@@ -50,7 +53,7 @@ def generate_exercise_2(text):
 
 
 def generate_wrong_words(verb):
-    wrong_words = []
+    wrong_words = [verb]
 
     # Generate wrong words using word2vec model
     word_vector = word2vec_model[verb]
@@ -97,11 +100,15 @@ def get_random_word(sentences):
 
 def get_synonym(word):
     response = requests.get(f"https://api.datamuse.com/words?rel_syn={word}")
-    if response.status_code == 200:
-        synonyms = [item['word'] for item in response.json()]
+    synonyms = [item['word'] for item in response.json()]
+    if synonyms == []:
+        for syn in wordnet.synsets(word):
+            for lemma in syn.lemmas():
+                synonyms.append(lemma.name())
         return synonyms
-    else:
-        return []
+    return synonyms
+    
+
 
 
 def highlight_word(sentence, word):
@@ -128,23 +135,6 @@ def generate_exercise_4(text):
 
 
 
-# def exercises(request):
-#     if request.method == 'POST':
-#         file = request.FILES['file']
-#         if file:
-#             text = file.read().decode('utf-8')
-#             exercise_1 = generate_exercise_1(text)
-#             exercise_2 = generate_exercise_2(text)
-#             exercise_3 = generate_exercise_3(text)
-#             exercise_4 = generate_exercise_4(text)
-#             return render(request, 'exercises.html', 
-#                           {'exercise_1': exercise_1, 
-#                            'exercise_2': exercise_2, 
-#                            'exercise_3': exercise_3,
-#                            'exercise_4': exercise_4})
-#     return render(request, 'index.html')
-
-
 def exercises(request):
     if request.method == 'POST':
         file = request.FILES['file']
@@ -158,6 +148,7 @@ def exercises(request):
             request.session['exercise_2_answer'] = exercise_2['answer']
             request.session['exercise_3_answer'] = exercise_3['answer']
             request.session['exercise_4_answer'] = exercise_4['answer']
+            print(request.session['exercise_2_answer'])
             return render(request, 'exercises.html', 
                           {'exercise_1': exercise_1, 
                            'exercise_2': exercise_2, 
