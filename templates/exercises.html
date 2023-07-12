@@ -15,7 +15,7 @@
                     {% csrf_token %}
                     {% for option in exercise_1.options %}
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="answer" value="{{ option }}" id="{{ option }}">
+                        <input class="form-check-input" type="radio" name="answer_1" value="{{ option }}" id="{{ option }}">
                         <label class="form-check-label" for="{{ option }}">{{ option }}</label>
                     </div>
                     {% endfor %}
@@ -33,7 +33,7 @@
                 <form method="post" action="{% url 'check_exercise_2' %}">
                     {% csrf_token %}
                     <div class="form-group">
-                        <select class="form-control" name="answer" id="answer">
+                        <select class="form-control" name="answer_2" id="answer">
                             <option value="">Choose an option</option>
                             {% for option in exercise_2.options %}
                             <option value="{{ option }}">{{ option }}</option>
@@ -56,7 +56,7 @@
                     {% csrf_token %}
                     <div class="form-group">
                         <label for="input_answer">Enter your answer:</label>
-                        <input type="text" class="form-control" name="answer" id="input_answer">
+                        <input type="text" class="form-control" name="answer_3" id="input_answer">
                     </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
@@ -73,7 +73,7 @@
                     {% csrf_token %}
                     <div class="form-group">
                         <label for="input_sentence">Arrange the words:</label>
-                        <input type="text" class="form-control" name="sentence" id="input_sentence">
+                        <input type="text" class="form-control" name="answer_4" id="input_sentence">
                     </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
